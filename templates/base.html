@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/6ea77c6e04.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg mb-5" id="main-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Flask Feedback</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if session['curr_user']%}
+                    <li class="nav-item">
+                        <a class="btn btn-info fw-bold" aria-current="page" href="/feedback/add">Add Feedback</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="btn btn-success fw-bold">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning fw-bold" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary fw-bold" href="/register">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div>
+                {% if session['curr_user']%}
+                <a href="/user/{{session['curr_user']}}">
+                    <i class="fa-solid fa-user-gear"></i>
+                    {{session['curr_user']}}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% for category, msg in get_flashed_messages(with_categories=True)%}
+    {% if msg %}
+    <div class="mt-2 mb-2 alert alert-{{category}}">{{msg}}</div>
+    {% endif %}
+    {% endfor %}
+    {% block content%} {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

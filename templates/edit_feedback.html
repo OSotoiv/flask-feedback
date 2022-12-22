@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center">
+    Feedback
+</h1>
+<div class="container col-4 mb-3">
+    <form class="d-inline" action="/feedback/{{feedback_id}}" method="POST">
+        {{ form.hidden_tag() }}
+
+        {%for field in form if field.widget.input_type != 'hidden'%}
+        <div class="mb-3">
+            {{field.label(class_='form-label')}}
+            {{field(class_="form-control")}}
+            {% for error in field.errors %}
+            <p class="text-danger">
+                {{error}}
+            </p>
+            {% endfor%}
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary btn-sm" type="submit">update</button>
+    </form>
+    <form class="d-inline" action="/feedback/delete/{{feedback_id}}" method="POST">
+        <button class="btn btn-danger btn-sm">delete</button>
+    </form>
+</div>
+{% endblock %}
